@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Text;
 
 namespace WordFrequency.Controllers
@@ -10,17 +11,17 @@ namespace WordFrequency.Controllers
     {
         [HttpPost]
         public async Task<JsonResult> Post()
-        {
+        {                        
             string text;
-            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+
+            //Read text from input request body
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.Default))
             {
                 text = await reader.ReadToEndAsync();
             }
             WordFrequency wf = new WordFrequency();
 
-            Console.WriteLine(text);
-
-            Dictionary<string, int> dictionary = wf.CalculateWords(text);
+            Dictionary<string, int> dictionary = wf.CalculateWords(text);        
 
             return new JsonResult(dictionary);
         }
